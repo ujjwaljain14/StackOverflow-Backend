@@ -28,4 +28,7 @@ public class User extends BaseModel{
     @OneToMany(mappedBy = "user")
     private List<Question> questions = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user")
+    private List<Comment> comments = new ArrayList<>();
+
 }
