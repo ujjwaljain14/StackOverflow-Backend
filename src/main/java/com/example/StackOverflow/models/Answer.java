@@ -15,14 +15,13 @@ import lombok.*;
 
 public class Answer extends BaseModel{
 
-    @Column(nullable = false,unique = true)
     @ManyToOne(cascade = CascadeType.REMOVE)
     private Question question;
 
     @Column(nullable = false)
     private String text;
 
-    @Column(nullable = false)
+    @ManyToOne
     private User user;
 
 }

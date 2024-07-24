@@ -20,11 +20,9 @@ public class Comment extends BaseModel{
     @Column(nullable = false)
     private String text;
 
-    @Column(nullable = false)
     @ManyToOne(cascade = CascadeType.REMOVE)
     private User user;
 
-    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private CommentType commentType;
 

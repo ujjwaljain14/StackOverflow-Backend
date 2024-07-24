@@ -23,13 +23,13 @@ public abstract class BaseModel {
     @GeneratedValue(strategy = GenerationType.UUID)
     protected UUID id;
 
-    @Column(nullable = false,updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     @CreatedDate
+    @Column(nullable = false,updatable = false)
     protected Date createdAt;
 
-    @Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     @LastModifiedDate
+    @Column(nullable = false)
     protected Date UpdatedAt;
 }

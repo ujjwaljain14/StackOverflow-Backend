@@ -18,19 +18,20 @@ public class Question extends BaseModel{
 
     @Column(nullable = false)
     private String body;
-
-    @Column
+    @ManyToMany
+    @JoinTable(
+           name = "question_tags",
+           joinColumns = @JoinColumn(name = "question_id"),
+           inverseJoinColumns = @JoinColumn(name = "topic_id")
+    )
     private List<Topic> topics = new ArrayList<>();
 
-    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private QuestionStatus questionStatus;
 
-    @Column(nullable = false)
     @ManyToOne(cascade = CascadeType.REMOVE)
     private User user;
 
-    @Column
     @OneToMany(mappedBy = "question")
-    private List<Topic> answers = new ArrayList<>();
+    private List<Answer> answers = new ArrayList<>();
 }

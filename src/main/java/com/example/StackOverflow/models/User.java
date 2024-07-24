@@ -1,7 +1,6 @@
 package com.example.StackOverflow.models;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
 import jakarta.persistence.OneToMany;
 import lombok.*;
 
@@ -14,7 +13,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-
+@Inheritance(strategy = InheritanceType.JOINED)
 public class User extends BaseModel{
 
     @Column(nullable = false,unique = true)
@@ -30,5 +29,8 @@ public class User extends BaseModel{
 
     @OneToMany(mappedBy = "user")
     private List<Comment> comments = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    private List<Answer> answers = new ArrayList<>();
 
 }
