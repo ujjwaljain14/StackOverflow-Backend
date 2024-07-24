@@ -27,6 +27,10 @@ public class Question extends BaseModel{
     private QuestionStatus questionStatus;
 
     @Column(nullable = false)
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REMOVE)
     private User user;
+
+    @Column
+    @OneToMany(mappedBy = "question")
+    private List<Topic> answers = new ArrayList<>();
 }
