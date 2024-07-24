@@ -5,6 +5,9 @@ import com.example.StackOverflow.repositories.UserRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+import java.util.UUID;
+
 @Service
 public class UserService implements CommandLineRunner {
 
@@ -16,6 +19,10 @@ public class UserService implements CommandLineRunner {
 
     public void createNewUser(User user){
         userRepository.save(user);
+    }
+
+    public Optional<User> getUserById(UUID userId){
+        return userRepository.findById(userId);
     }
 
 
