@@ -26,10 +26,10 @@ public abstract class BaseModel {
     @Column(nullable = false,updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     @CreatedDate
-    Date createdAt;
+    protected Date createdAt;
 
     @Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     @LastModifiedDate
-    Date UpdatedAt;
+    protected Date UpdatedAt;
 }
