@@ -37,6 +37,7 @@ public class Question extends BaseModel{
     @ManyToOne(cascade = CascadeType.ALL)
     private User user;
 
+    @JsonIgnoreProperties("question")
     @OneToMany(mappedBy = "question")
     private List<Answer> answers;
 }

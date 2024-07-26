@@ -8,6 +8,7 @@ import com.example.StackOverflow.repositories.UserRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -41,6 +42,13 @@ public class AnswerService implements CommandLineRunner {
         answerRepository.save(answer);
 
         return answer;
+    }
+
+    public List<Answer> getAnswers(String questionId) {
+        Question question = questionRepository.findById(UUID.fromString(questionId))
+                .orElseThrow(() -> new IllegalArgumentException("Invalid question ID"));
+
+        return answerRepository.findAllByQuestion(question);
     }
 
     @Override

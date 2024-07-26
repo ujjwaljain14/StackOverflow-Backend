@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/stackoverflow/answers")
 
@@ -29,6 +31,16 @@ public class AnswerController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
 
+    }
+
+    @GetMapping("/questions/{questionId}")
+    public ResponseEntity<?> getAnswers(@PathVariable("questionId") String questionId){
+        try{
+            List<Answer> answers = answerService.getAnswers(questionId);
+            return ResponseEntity.status(HttpStatus.CREATED).body(answers);
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
 

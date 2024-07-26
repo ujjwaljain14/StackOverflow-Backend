@@ -1,5 +1,6 @@
 package com.example.StackOverflow.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
@@ -14,6 +15,7 @@ import lombok.*;
 public class Answer extends BaseModel{
 
     @JsonIgnoreProperties("answers")
+    @JsonIgnore
     @ManyToOne(cascade = CascadeType.REMOVE)
     private Question question;
 
