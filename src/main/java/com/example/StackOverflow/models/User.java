@@ -1,5 +1,6 @@
 package com.example.StackOverflow.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.persistence.OneToMany;
@@ -25,14 +26,17 @@ public class User extends BaseModel{
     private String bio;
 
     @JsonIgnoreProperties("user")
+    @JsonIgnore
     @OneToMany(mappedBy = "user",fetch = FetchType.LAZY)
     private List<Question> questions = new ArrayList<>();
 
     @JsonIgnoreProperties("user")
+    @JsonIgnore
     @OneToMany(mappedBy = "user",fetch = FetchType.LAZY)
     private List<Comment> comments = new ArrayList<>();
 
     @JsonIgnoreProperties("user")
+    @JsonIgnore
     @OneToMany(mappedBy = "user",fetch = FetchType.LAZY)
     private List<Answer> answers = new ArrayList<>();
 
