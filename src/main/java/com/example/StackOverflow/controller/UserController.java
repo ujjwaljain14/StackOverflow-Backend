@@ -10,7 +10,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/v1/stackoverflow")
+@RequestMapping("/api/v1/stackoverflow/users")
 public class UserController {
 
     UserService userService;
@@ -19,7 +19,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("/users")
+    @PostMapping
     public ResponseEntity<?> createNewUser(@RequestBody User user){
 //        System.out.println(user.getId() + " " + user.getCreatedAt() + " " + user.getUpdatedAt() + " " + user.getUsername() + " " + user.getEmail() + " " + user.getBio());
         try{
@@ -30,7 +30,7 @@ public class UserController {
         }
     }
 
-    @GetMapping("/users/{userId}")
+    @GetMapping("/{userId}")
     public ResponseEntity<?> getUserById(@PathVariable("userId") String userId){
         try{
             UUID uuid = UUID.fromString(userId);
@@ -45,5 +45,25 @@ public class UserController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
+    // not working properly
+
+    @PutMapping("/{userId}")
+    public ResponseEntity<?> updateUserById(@PathVariable("userId") String userId, @RequestBody(required = false) User updateUser){
+        try{
+            UUID uuid = UUID.fromString(userId);
+            Optional<User> user = userService.getUserById(UUID.fromString(userId));
+            if(user.isPresent()){
+                user = userService.updateUserById(user,updateUser);
+                return ResponseEntity.ok().body(user);
+            }else{
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("USER NOT FOUND");
+            }
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+
 
 }

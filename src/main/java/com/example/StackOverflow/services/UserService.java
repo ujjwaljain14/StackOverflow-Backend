@@ -25,9 +25,28 @@ public class UserService implements CommandLineRunner {
         return userRepository.findById(userId);
     }
 
+    public Optional<User> updateUserById(Optional<User> user, User userUpdate){
+
+        System.out.println("we are in here");
+        if(userUpdate.getBio() != null) {
+            user.get().setBio(userUpdate.getBio());
+            System.out.println("hwre i come");
+        }
+        if(userUpdate.getEmail() != null) {
+            user.get().setEmail(userUpdate.getEmail());
+        }
+        if(userUpdate.getUsername() != null) {
+            user.get().setUsername(userUpdate.getUsername());
+        }
+
+        System.out.println("we are out of here---------------------------");
+
+        return user;
+    }
+
 
     @Override
     public void run(String... args) throws Exception {
-        System.out.println("****************************");
+        System.out.println("*************User Service***************");
     }
 }

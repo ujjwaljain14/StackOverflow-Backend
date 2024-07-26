@@ -1,5 +1,6 @@
 package com.example.StackOverflow.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.persistence.OneToMany;
 import lombok.*;
@@ -13,7 +14,6 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Inheritance(strategy = InheritanceType.JOINED)
 public class User extends BaseModel{
 
     @Column(nullable = false,unique = true)
@@ -24,13 +24,16 @@ public class User extends BaseModel{
 
     private String bio;
 
-    @OneToMany(mappedBy = "user")
+    @JsonIgnoreProperties("user")
+    @OneToMany(mappedBy = "user",fetch = FetchType.LAZY)
     private List<Question> questions = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user")
+    @JsonIgnoreProperties("user")
+    @OneToMany(mappedBy = "user",fetch = FetchType.LAZY)
     private List<Comment> comments = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user")
+    @JsonIgnoreProperties("user")
+    @OneToMany(mappedBy = "user",fetch = FetchType.LAZY)
     private List<Answer> answers = new ArrayList<>();
 
 }

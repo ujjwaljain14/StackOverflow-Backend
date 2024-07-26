@@ -1,9 +1,7 @@
 package com.example.StackOverflow.models;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.OneToMany;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.ArrayList;
@@ -21,6 +19,7 @@ public class Topic extends BaseModel{
     @Column(unique = true,nullable = false)
     private String name;
 
-    @ManyToMany(mappedBy = "topics")
+    @JsonIgnoreProperties("topics")
+    @ManyToMany(mappedBy = "topics",fetch = FetchType.LAZY)
     private List<Question> questions = new ArrayList<>();
 }
