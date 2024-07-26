@@ -18,9 +18,6 @@ public interface QuestionRepository extends JpaRepository<Question, UUID> {
 
     public List<Question> findAllByTopicsContaining(Topic topic);
 
-//    @Query("SELECT q FROM Question q JOIN q.topics t WHERE q.title LIKE %:title%")
-//    public List<Question> findAllByTitleContainingOrTopicsContaining(String title);
-
     public List<Question>  findAllQuestionsByTitleOrTopicsContaining(String title, Topic topic);
 
 
