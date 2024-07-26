@@ -6,6 +6,8 @@ import com.example.StackOverflow.services.CommentService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/stackoverflow/comments")
 
@@ -22,6 +24,16 @@ public class CommentController {
         try{
             Comment comment = commentService.postComment(commentDto);
             return ResponseEntity.ok().body(comment);
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/{parentId}")
+    public ResponseEntity<?> getComments(@PathVariable("parentId") String commentId,@RequestParam("commentType") String commentType){
+        try{
+            List<Comment> comments = commentService.getComments(commentId,commentType);
+            return ResponseEntity.ok().body(comments);
         }catch (Exception e){
             return ResponseEntity.badRequest().body(e.getMessage());
         }

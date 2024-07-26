@@ -9,6 +9,7 @@ import com.example.StackOverflow.repositories.UserRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -42,9 +43,18 @@ public class CommentService implements CommandLineRunner {
         return comment;
     }
 
+    public List<Comment> getComments(String commentId, String commentType) {
+
+        return commentRepository.findAllByParentAndCommentType(
+                                    UUID.fromString(commentId), CommentType.valueOf(commentType.toUpperCase())
+                                );
+
+    }
+
     @Override
     public void run(String... args) throws Exception {
         System.out.println("************Comment Service*************");
     }
+
 
 }
