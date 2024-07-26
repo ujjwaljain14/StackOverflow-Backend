@@ -51,8 +51,25 @@ public class AnswerService implements CommandLineRunner {
         return answerRepository.findAllByQuestion(question);
     }
 
+    public Answer editAnswer(String answerId, AnswerDto answerDto) {
+        Answer answer = answerRepository.findById(UUID.fromString(answerId))
+                .orElseThrow(() -> new IllegalArgumentException("Invalid answer ID"));
+
+        User user = userRepository.findById(UUID.fromString(answerDto.getUserId()))
+                .orElseThrow(() -> new IllegalArgumentException("Invalid user ID"));
+
+        if(user.getId() != answer.getUser().getId()) throw new IllegalCallerException("Answer owner and user do not match");
+
+        answer.setText(answerDto.getText());
+        answerRepository.save(answer);
+
+        return answer;
+    }
+
     @Override
     public void run(String... args) throws Exception {
-        System.out.println("************Answer Service*************");
+        System.out.println("*************Answer Service*************");
     }
+
+
 }

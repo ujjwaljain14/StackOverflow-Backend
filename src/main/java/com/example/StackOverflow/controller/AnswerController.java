@@ -43,6 +43,16 @@ public class AnswerController {
         }
     }
 
+    @PutMapping("/{answerId}")
+    public ResponseEntity<?> editAnswer(@PathVariable("answerId") String answerId, @RequestBody AnswerDto answerDto){
+        try{
+            Answer answer = answerService.editAnswer(answerId,answerDto);
+            return ResponseEntity.ok().body(answer);
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
 
 
 }
