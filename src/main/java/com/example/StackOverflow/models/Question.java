@@ -21,7 +21,7 @@ public class Question extends BaseModel{
     @Column(nullable = false)
     private String body;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JsonIgnoreProperties("questions")
     @JoinTable(
            name = "question_tags",
@@ -33,7 +33,7 @@ public class Question extends BaseModel{
     @Enumerated(EnumType.STRING)
     private QuestionStatus questionStatus;
 
-    @JsonIgnoreProperties("questions")
+    @JsonIgnoreProperties({"questions","comments","answers"})
     @ManyToOne(cascade = CascadeType.ALL)
     private User user;
 

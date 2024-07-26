@@ -1,9 +1,7 @@
 package com.example.StackOverflow.models;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
@@ -15,12 +13,14 @@ import lombok.*;
 
 public class Answer extends BaseModel{
 
+    @JsonIgnoreProperties("answers")
     @ManyToOne(cascade = CascadeType.REMOVE)
     private Question question;
 
     @Column(nullable = false)
     private String text;
 
+    @JsonIgnoreProperties({"questions", "comments", "answers"})
     @ManyToOne
     private User user;
 
