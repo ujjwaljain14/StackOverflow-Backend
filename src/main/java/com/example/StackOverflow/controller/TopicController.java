@@ -3,6 +3,7 @@ package com.example.StackOverflow.controller;
 import com.example.StackOverflow.models.Topic;
 import com.example.StackOverflow.models.User;
 import com.example.StackOverflow.services.TopicService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,7 +23,7 @@ public class TopicController {
     public ResponseEntity<?> addTopic(@RequestBody Topic topic){
         try{
             Topic t = topicService.addTopic(topic);
-            return ResponseEntity.ok().body(t);
+            return ResponseEntity.status(HttpStatus.CREATED).body(t);
         }catch (Exception e){
             return ResponseEntity.badRequest().body(e.getMessage());
         }
