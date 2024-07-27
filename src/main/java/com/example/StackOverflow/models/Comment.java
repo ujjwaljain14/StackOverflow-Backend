@@ -32,4 +32,10 @@ public class Comment extends BaseModel{
     @JsonIgnore
     private List<CommentVote> commentVotes;
 
+    @Builder.Default
+    private Long upvote = 0L;
+
+    @Builder.Default
+    private Long downvote = 0L;
+
 }

@@ -32,4 +32,11 @@ public class Answer extends BaseModel{
     @JsonIgnore
     private List<AnswerVote> answerVotes;
 
+    @Builder.Default
+    private Long upvote = 0L;
+
+    @Builder.Default
+    private Long downvote = 0L;
+
+
 }

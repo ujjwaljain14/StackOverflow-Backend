@@ -3,6 +3,7 @@ package com.example.StackOverflow.services;
 import com.example.StackOverflow.dto.VoteDto;
 import com.example.StackOverflow.models.*;
 import com.example.StackOverflow.repositories.*;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,7 +11,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
-public class VoteService {
+public class VoteService implements CommandLineRunner {
 
     private final QuestionRepository questionRepository;
     private final AnswerRepository answerRepository;
@@ -30,15 +31,36 @@ public class VoteService {
         this.commentVoteRepository = commentVoteRepository;
     }
 
+    private void updateVotesOnAnswer(Answer answer){
+        Long upvote = answerVoteRepository.countByVoteTypeAndAnswer(VoteType.UPVOTE,answer);
+        Long downvote = answerVoteRepository.countByVoteTypeAndAnswer(VoteType.DOWNVOTE,answer);
+        answer.setUpvote(upvote);
+        answer.setDownvote(downvote);
+        answerRepository.save(answer);
+    }
+
+    private void updateVotesOnQuestion(Question question){
+        Long upvote = questionVoteRepository.countByVoteTypeAndQuestion(VoteType.UPVOTE,question);
+        Long downvote = questionVoteRepository.countByVoteTypeAndQuestion(VoteType.DOWNVOTE,question);
+        question.setUpvote(upvote);
+        question.setDownvote(downvote);
+        questionRepository.save(question);
+    }
+
+    private void updateVotesOnComment(Comment comment){
+        Long upvote = commentVoteRepository.countByVoteTypeAndComment(VoteType.UPVOTE,comment);
+        Long downvote = commentVoteRepository.countByVoteTypeAndComment(VoteType.DOWNVOTE,comment);
+        comment.setUpvote(upvote);
+        comment.setDownvote(downvote);
+        commentRepository.save(comment);
+    }
+
     public QuestionVote voteQuestion(String questionId, VoteDto voteDto){
         User user = userRepository.findById(UUID.fromString(voteDto.getUserId()))
                 .orElseThrow(() -> new IllegalArgumentException("Invalid user ID"));
 
         Question question = questionRepository.findById(UUID.fromString(questionId))
                 .orElseThrow(() -> new IllegalArgumentException("Invalid Question ID"));
-
-
-
 
         Optional<QuestionVote> existingVote = questionVoteRepository.findByUserAndQuestion(user, question);
         QuestionVote vote;
@@ -48,6 +70,7 @@ public class VoteService {
                 vote.setVoteType(VoteType.valueOf(voteDto.getVoteType().toUpperCase()));
             } else {
                 questionVoteRepository.delete(vote);
+                updateVotesOnQuestion(question);
                 return null;
             }
         } else {
@@ -60,6 +83,8 @@ public class VoteService {
         }
 
         questionVoteRepository.save(vote);
+        updateVotesOnQuestion(question);
+
         return vote;
     }
 
@@ -71,9 +96,6 @@ public class VoteService {
         Answer answer = answerRepository.findById(UUID.fromString(answerId))
                 .orElseThrow(() -> new IllegalArgumentException("Invalid Answer ID"));
 
-
-
-
         Optional<AnswerVote> existingVote = answerVoteRepository.findByUserAndAnswer(user, answer);
         AnswerVote vote;
         if (existingVote.isPresent()) {
@@ -82,6 +104,7 @@ public class VoteService {
                 vote.setVoteType(VoteType.valueOf(voteDto.getVoteType().toUpperCase()));
             } else {
                 answerVoteRepository.delete(vote);
+                updateVotesOnAnswer(answer);
                 return null;
             }
         } else {
@@ -92,8 +115,8 @@ public class VoteService {
                     .answer(answer)
                     .build();
         }
-
         answerVoteRepository.save(vote);
+        updateVotesOnAnswer(answer);
         return vote;
     }
 
@@ -105,9 +128,6 @@ public class VoteService {
         Comment comment = commentRepository.findById(UUID.fromString(commentId))
                 .orElseThrow(() -> new IllegalArgumentException("Invalid Comment ID"));
 
-
-
-
         Optional<CommentVote> existingVote = commentVoteRepository.findByUserAndComment(user, comment);
         CommentVote vote;
         if (existingVote.isPresent()) {
@@ -116,6 +136,7 @@ public class VoteService {
                 vote.setVoteType(VoteType.valueOf(voteDto.getVoteType().toUpperCase()));
             } else {
                 commentVoteRepository.delete(vote);
+                updateVotesOnComment(comment);
                 return null;
             }
         } else {
@@ -128,7 +149,13 @@ public class VoteService {
         }
 
         commentVoteRepository.save(vote);
+        updateVotesOnComment(comment);
+
         return vote;
     }
 
+    @Override
+    public void run(String... args) throws Exception {
+        System.out.println("*************Vote Service***************");
+    }
 }
