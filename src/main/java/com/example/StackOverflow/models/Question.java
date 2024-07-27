@@ -1,8 +1,11 @@
 package com.example.StackOverflow.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +16,8 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Inheritance(strategy = InheritanceType.JOINED)
+
+
 public class Question extends BaseModel{
 
     @Column(nullable = false)
@@ -40,4 +45,9 @@ public class Question extends BaseModel{
     @JsonIgnoreProperties("question")
     @OneToMany(mappedBy = "question")
     private List<Answer> answers;
+
+    @OneToMany(mappedBy = "question")
+    @JsonIgnore
+    private List<QuestionVote> questionVotes;
+
 }

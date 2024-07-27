@@ -40,4 +40,13 @@ public class User extends BaseModel{
     @OneToMany(mappedBy = "user",fetch = FetchType.LAZY)
     private List<Answer> answers = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user",fetch = FetchType.LAZY)
+    private List<AnswerVote> answerVotes;
+
+    @OneToMany(mappedBy = "user",fetch = FetchType.LAZY)
+    private List<QuestionVote> questionVotes;
+
+    @OneToMany(mappedBy = "user",fetch = FetchType.LAZY)
+    private List<CommentVote> commentVotes;
+
 }

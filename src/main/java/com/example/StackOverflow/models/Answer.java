@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Entity
 @Getter
 @Setter
@@ -22,8 +24,12 @@ public class Answer extends BaseModel{
     @Column(nullable = false)
     private String text;
 
-    @JsonIgnoreProperties({"questions", "comments", "answers"})
+    @JsonIgnoreProperties({"questions", "comments", "answers","answerVotes","questionVotes","commentVotes"})
     @ManyToOne
     private User user;
+
+    @OneToMany(mappedBy = "answer")
+    @JsonIgnore
+    private List<AnswerVote> answerVotes;
 
 }
