@@ -41,12 +41,29 @@ public class User extends BaseModel{
     private List<Answer> answers = new ArrayList<>();
 
     @OneToMany(mappedBy = "user",fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<AnswerVote> answerVotes;
 
     @OneToMany(mappedBy = "user",fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<QuestionVote> questionVotes;
 
     @OneToMany(mappedBy = "user",fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<CommentVote> commentVotes;
+
+    @ManyToMany
+    @JsonIgnore
+    private List<User> follower;
+
+    @ManyToMany
+    @JsonIgnore
+    private List<User> following;
+
+    @Builder.Default
+    private Long followingCount=0L;
+
+    @Builder.Default
+    private Long followerCount=0L;
 
 }
