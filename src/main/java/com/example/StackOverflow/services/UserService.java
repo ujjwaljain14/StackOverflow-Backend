@@ -9,7 +9,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
-public class UserService implements CommandLineRunner {
+public class UserService implements CommandLineRunner,UserServiceInterface {
 
     private final UserRepository userRepository;
 
@@ -17,14 +17,17 @@ public class UserService implements CommandLineRunner {
         this.userRepository = userRepository;
     }
 
+    @Override
     public void createNewUser(User user){
         userRepository.save(user);
     }
 
+    @Override
     public Optional<User> getUserById(UUID userId){
         return userRepository.findById(userId);
     }
 
+    @Override
     public Optional<User> updateUserById(Optional<User> user, User userUpdate){
 
         System.out.println("we are in here");

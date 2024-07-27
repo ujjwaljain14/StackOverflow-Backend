@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
-public class FollowService implements CommandLineRunner {
+public class FollowService implements CommandLineRunner, FollowServiceInterface {
 
     private final UserRepository userRepository;
 
@@ -17,16 +17,19 @@ public class FollowService implements CommandLineRunner {
         this.userRepository = userRepository;
     }
 
-    private void updateFollowingCount(User user){
+    @Override
+    public void updateFollowingCount(User user){
         user.setFollowingCount((long) user.getFollowing().size());
         userRepository.save(user);
     }
 
-    private void updateFollowerCount(User user){
+    @Override
+    public void updateFollowerCount(User user){
         user.setFollowingCount((long) user.getFollower().size());
         userRepository.save(user);
     }
 
+    @Override
     public String follow(String userId, String targetUserId){
         User user = userRepository.findById(UUID.fromString(userId))
                 .orElseThrow(() -> new IllegalArgumentException("Invalid user ID"));
@@ -53,6 +56,7 @@ public class FollowService implements CommandLineRunner {
         return "User Followed";
     }
 
+    @Override
     public String unfollow(String userId, String targetUserId){
         User user = userRepository.findById(UUID.fromString(userId))
                 .orElseThrow(() -> new IllegalArgumentException("Invalid user ID"));
@@ -78,12 +82,14 @@ public class FollowService implements CommandLineRunner {
         return "User Unfollowed";
     }
 
+    @Override
     public List<User> getFollowings(String userId) {
         User user = userRepository.findById(UUID.fromString(userId))
                 .orElseThrow(() -> new IllegalArgumentException("Invalid user ID"));
         return user.getFollowing();
     }
 
+    @Override
     public List<User> getFollowers(String userId) {
         User user = userRepository.findById(UUID.fromString(userId))
                 .orElseThrow(() -> new IllegalArgumentException("Invalid user ID"));

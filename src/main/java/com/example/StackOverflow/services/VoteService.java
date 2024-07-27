@@ -6,12 +6,11 @@ import com.example.StackOverflow.repositories.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 @Service
-public class VoteService implements CommandLineRunner {
+public class VoteService implements CommandLineRunner, VoteServiceInterface {
 
     private final QuestionRepository questionRepository;
     private final AnswerRepository answerRepository;
@@ -31,7 +30,8 @@ public class VoteService implements CommandLineRunner {
         this.commentVoteRepository = commentVoteRepository;
     }
 
-    private void updateVotesOnAnswer(Answer answer){
+    @Override
+    public void updateVotesOnAnswer(Answer answer){
         Long upvote = answerVoteRepository.countByVoteTypeAndAnswer(VoteType.UPVOTE,answer);
         Long downvote = answerVoteRepository.countByVoteTypeAndAnswer(VoteType.DOWNVOTE,answer);
         answer.setUpvote(upvote);
@@ -39,7 +39,8 @@ public class VoteService implements CommandLineRunner {
         answerRepository.save(answer);
     }
 
-    private void updateVotesOnQuestion(Question question){
+    @Override
+    public void updateVotesOnQuestion(Question question){
         Long upvote = questionVoteRepository.countByVoteTypeAndQuestion(VoteType.UPVOTE,question);
         Long downvote = questionVoteRepository.countByVoteTypeAndQuestion(VoteType.DOWNVOTE,question);
         question.setUpvote(upvote);
@@ -47,7 +48,8 @@ public class VoteService implements CommandLineRunner {
         questionRepository.save(question);
     }
 
-    private void updateVotesOnComment(Comment comment){
+    @Override
+    public void updateVotesOnComment(Comment comment){
         Long upvote = commentVoteRepository.countByVoteTypeAndComment(VoteType.UPVOTE,comment);
         Long downvote = commentVoteRepository.countByVoteTypeAndComment(VoteType.DOWNVOTE,comment);
         comment.setUpvote(upvote);
@@ -55,6 +57,7 @@ public class VoteService implements CommandLineRunner {
         commentRepository.save(comment);
     }
 
+    @Override
     public QuestionVote voteQuestion(String questionId, VoteDto voteDto){
         User user = userRepository.findById(UUID.fromString(voteDto.getUserId()))
                 .orElseThrow(() -> new IllegalArgumentException("Invalid user ID"));
@@ -88,7 +91,7 @@ public class VoteService implements CommandLineRunner {
         return vote;
     }
 
-
+    @Override
     public AnswerVote voteAnswer(String answerId, VoteDto voteDto){
         User user = userRepository.findById(UUID.fromString(voteDto.getUserId()))
                 .orElseThrow(() -> new IllegalArgumentException("Invalid user ID"));
@@ -120,7 +123,7 @@ public class VoteService implements CommandLineRunner {
         return vote;
     }
 
-
+    @Override
     public CommentVote voteComment(String commentId, VoteDto voteDto){
         User user = userRepository.findById(UUID.fromString(voteDto.getUserId()))
                 .orElseThrow(() -> new IllegalArgumentException("Invalid user ID"));

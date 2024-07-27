@@ -13,11 +13,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
-public class QuestionService implements CommandLineRunner {
+public class QuestionService implements CommandLineRunner,QuestionServiceInterface {
 
     private final QuestionRepository questionRepository;
     private final UserRepository userRepository;
@@ -31,6 +30,7 @@ public class QuestionService implements CommandLineRunner {
         this.followService = followService;
     }
 
+    @Override
     public Question createNewQuestion(QuestionDto questionDto){
         User user = userRepository.findById(UUID.fromString(questionDto.getUserId()))
                     .orElseThrow(() -> new IllegalArgumentException("Invalid user ID"));
@@ -57,17 +57,20 @@ public class QuestionService implements CommandLineRunner {
         return ques;
     }
 
+    @Override
     public List<Question> getQuestionsByStatus(String status){
 
         QuestionStatus questionStatus = QuestionStatus.valueOf(status.toUpperCase());
         return questionRepository.findAllQuestionsByQuestionStatus(questionStatus);
     }
 
+    @Override
     public List<Question> getQuestionsByFollowing(String userId){
         List<User> followingList = followService.getFollowings(userId);
         return questionRepository.findAllByUserInOrderByUpdatedAtDesc(followingList);
     }
 
+    @Override
     public List<Question> searchQuestions(String title, String topicId) {
         System.out.println(title + " " + topicId);
         if(topicId == null && title == null) return new ArrayList<>();
@@ -83,7 +86,6 @@ public class QuestionService implements CommandLineRunner {
         }
         return questionRepository.findAllQuestionsByTitleOrTopicsContaining(title,topic);
     }
-
 
 
     @Override

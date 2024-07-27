@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
-public class CommentService implements CommandLineRunner {
+public class CommentService implements CommandLineRunner, CommentServiceInterface {
 
     private final CommentRepository commentRepository;
     private final UserRepository userRepository;
@@ -23,6 +23,7 @@ public class CommentService implements CommandLineRunner {
         this.userRepository = userRepository;
     }
 
+    @Override
     public Comment postComment(CommentDto commentDto) {
 
         User user = userRepository.findById(UUID.fromString(commentDto.getUserId()))
@@ -43,6 +44,7 @@ public class CommentService implements CommandLineRunner {
         return comment;
     }
 
+    @Override
     public List<Comment> getComments(String commentId, String commentType) {
 
         return commentRepository.findAllByParentAndCommentType(

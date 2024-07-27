@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
-public class AnswerService implements CommandLineRunner {
+public class AnswerService implements CommandLineRunner, AnswerServiceInterface {
 
     private final AnswerRepository answerRepository;
     private final UserRepository userRepository;
@@ -25,6 +25,7 @@ public class AnswerService implements CommandLineRunner {
         this.questionRepository = questionRepository;
     }
 
+    @Override
     public Answer postAnswer(String questionId, AnswerDto answerDto) {
 
         User user = userRepository.findById(UUID.fromString(answerDto.getUserId()))
@@ -44,6 +45,7 @@ public class AnswerService implements CommandLineRunner {
         return answer;
     }
 
+    @Override
     public List<Answer> getAnswers(String questionId) {
         Question question = questionRepository.findById(UUID.fromString(questionId))
                 .orElseThrow(() -> new IllegalArgumentException("Invalid question ID"));
@@ -51,6 +53,7 @@ public class AnswerService implements CommandLineRunner {
         return answerRepository.findAllByQuestion(question);
     }
 
+    @Override
     public Answer editAnswer(String answerId, AnswerDto answerDto) {
         Answer answer = answerRepository.findById(UUID.fromString(answerId))
                 .orElseThrow(() -> new IllegalArgumentException("Invalid answer ID"));

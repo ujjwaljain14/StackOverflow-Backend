@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class TopicService implements CommandLineRunner {
+public class TopicService implements CommandLineRunner,TopicServiceInterface {
 
     private final TopicRepository topicRepository;
 
@@ -17,17 +17,20 @@ public class TopicService implements CommandLineRunner {
         this.topicRepository = topicRepository;
     }
 
+    @Override
     public Topic addTopic(Topic topic) {
         topicRepository.save(topic);
         return topicRepository.getReferenceById((topic.getId()));
     }
 
+    @Override
     public List<Topic> getTopics() {
         return topicRepository.findAll(
                 Sort.by(Sort.Direction.ASC,"name")
             );
     }
 
+    @Override
     public List<Topic> getTopicsLike(String text) {
         return topicRepository.findAllByNameStartsWith(text);
     }
