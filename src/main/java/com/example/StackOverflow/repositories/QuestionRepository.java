@@ -3,6 +3,7 @@ package com.example.StackOverflow.repositories;
 import com.example.StackOverflow.models.Question;
 import com.example.StackOverflow.models.QuestionStatus;
 import com.example.StackOverflow.models.Topic;
+import com.example.StackOverflow.models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -21,4 +22,5 @@ public interface QuestionRepository extends JpaRepository<Question, UUID> {
     public List<Question>  findAllQuestionsByTitleOrTopicsContaining(String title, Topic topic);
 
 
+    List<Question> findAllByUserInOrderByUpdatedAtDesc(List<User> users);
 }

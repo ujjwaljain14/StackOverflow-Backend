@@ -41,6 +41,16 @@ public class QuestionController {
         }
     }
 
+    @GetMapping("/users/{userId}/followings")
+    public ResponseEntity<?> getQuestionsByFollowing(@PathVariable(name = "userId") String userId){
+        try {
+            List<Question> questions = questionService.getQuestionsByFollowing(userId);
+            return ResponseEntity.ok().body(questions);
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     @GetMapping("/search")
     public ResponseEntity<?> searchQuestions(@RequestParam(name = "title",required = false) String title, @RequestParam(name = "topicId",required = false) String topicId){
         try {

@@ -31,5 +31,5 @@ public abstract class BaseModel {
     @Temporal(TemporalType.TIMESTAMP)
     @LastModifiedDate
     @Column(nullable = false)
-    protected Date UpdatedAt;
+    protected Date updatedAt;
 }

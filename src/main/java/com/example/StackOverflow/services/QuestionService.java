@@ -22,11 +22,13 @@ public class QuestionService implements CommandLineRunner {
     private final QuestionRepository questionRepository;
     private final UserRepository userRepository;
     private final TopicRepository topicRepository;
+    private final FollowService followService;
 
-    public QuestionService(QuestionRepository questionRepository, UserRepository userRepository, TopicRepository topicRepository) {
+    public QuestionService(QuestionRepository questionRepository, UserRepository userRepository, TopicRepository topicRepository, FollowService followService) {
         this.questionRepository = questionRepository;
         this.userRepository = userRepository;
         this.topicRepository = topicRepository;
+        this.followService = followService;
     }
 
     public Question createNewQuestion(QuestionDto questionDto){
@@ -59,6 +61,11 @@ public class QuestionService implements CommandLineRunner {
 
         QuestionStatus questionStatus = QuestionStatus.valueOf(status.toUpperCase());
         return questionRepository.findAllQuestionsByQuestionStatus(questionStatus);
+    }
+
+    public List<Question> getQuestionsByFollowing(String userId){
+        List<User> followingList = followService.getFollowings(userId);
+        return questionRepository.findAllByUserInOrderByUpdatedAtDesc(followingList);
     }
 
     public List<Question> searchQuestions(String title, String topicId) {
